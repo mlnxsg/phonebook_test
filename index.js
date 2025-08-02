@@ -54,25 +54,25 @@ app.post('/api/persons', (request, response, next) => {
 
   if (!body.name || !body.number) {
     return response.status(400).json(
-      {error: 'name or number missing'}
+      { error: 'name or number missing' }
     )
   }
 
   Person.findOne({ name: body.name }).then(existingPerson => {
     if (existingPerson) {
-      return response.status(400).json({ error: 'name must be unique'})
+      return response.status(400).json({ error: 'name must be unique' })
     }
-    
+
     const person = new Person ({
       name: body.name,
       number: body.number,
     })
-    
+
     person.save()
       .then(savedPerson => {
         if (savedPerson) {
           response.json(savedPerson)
-        }  
+        }
       })
       .catch(error => next(error))
   })
@@ -89,7 +89,7 @@ app.put('/api/persons/:id', (request, response, next) => {
       }
 
       person.name = name
-      person.number = number 
+      person.number = number
 
       return person.save().then((updatedPerson) => {
         response.json(updatedPerson)
@@ -111,7 +111,7 @@ const errorHandler = (error,request, response, next) => {
 }
 
 app.use(errorHandler)
-    
+
 const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
